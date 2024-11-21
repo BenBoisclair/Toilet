@@ -24,8 +24,12 @@ onMounted(() => {
         13,
     );
 
+    const mapTile = import.meta.env.MAPTILER_API_KEY;
+
     L.tileLayer(
-        'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=gMNSyjCmDw2AH8bcYXID',
+        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=4BeojtqFUL3MyeiTDljY{` +
+            mapTile +
+            `}`,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
