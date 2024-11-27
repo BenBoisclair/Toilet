@@ -10,7 +10,7 @@ defineProps<{
 <template>
     <span
         :class="[
-            'facility-badge rounded-lg px-2 py-1 text-xs font-medium',
+            'facility-badge rounded-2xl px-2 py-1 text-xs font-medium',
             !active
                 ? 'border border-blue-600 bg-white text-blue-600'
                 : 'bg-blue-100 text-blue-600 border-white border',

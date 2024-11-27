@@ -36,6 +36,7 @@ const mapContainer = ref(null);
 const userCoords = ref({ lat: 13.736717, lng: 100.523186 }); // Default to Bangkok
 const currentCoords = ref({ lat: 0, lng: 0 });
 const selectedFacilities = ref(form.facilities || []);
+const mapTile = '4BeojtqFUL3MyeiTDljY';
 
 onMounted(() => {
     if (navigator.geolocation) {
@@ -67,7 +68,7 @@ const initializeMap = () => {
     );
 
     L.tileLayer(
-        'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=gMNSyjCmDw2AH8bcYXID',
+        'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=' + mapTile,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',

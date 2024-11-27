@@ -33,12 +33,12 @@ Route::post('/toilets/add', function () {
 })->middleware(['auth'])->name('store-toilet');
 
 Route::get('/toilets/{toilet}', function (Toilet $toilet) {
-    $toilet->load('facilities');
+    $toilet->load('facilities', 'discoverer');
     return Inertia::render('Toilet/Show', ['toilet' => $toilet]);
 });
 
 Route::get('/toilet/random', function () {
-    $toilet = Toilet::with('facilities')->inRandomOrder()->first();
+    $toilet = Toilet::with('facilities', 'discoverer')->inRandomOrder()->first();
     sleep(5);
 
     return response()->json($toilet);;
