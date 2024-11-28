@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Appbar from '@/Components/Appbar.vue';
+import Button from '@/Components/Button.vue';
 import FacilityBadge from '@/Components/FacilityBadge.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PageLayout from '@/Layouts/PageLayout.vue';
@@ -68,7 +68,8 @@ const initializeMap = () => {
     );
 
     L.tileLayer(
-        'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=' + mapTile,
+        'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=' +
+            mapTile,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
@@ -149,15 +150,6 @@ function submit() {
             <div class="mt-5 flex flex-col gap-4">
                 <div class="flex flex-col">
                     <InputLabel for="name" value="Name" />
-                    <!-- <input
-                        v-model="form.name"
-                        name="name"
-                        placeholder="e.g, Red Bathroom"
-                        id="name"
-                        type="text"
-                        class="mt-1 rounded-lg border-0 bg-gray-200"
-                        required
-                    /> -->
                     <TextInput
                         id="name"
                         type="text"
@@ -204,7 +196,7 @@ function submit() {
                 </div>
             </div>
             <div class="mt-10 flex justify-center">
-                <PrimaryButton class="ms-4"> Add Bathroom </PrimaryButton>
+                <Button class="font-bold"> Add Toilet </Button>
             </div>
         </form>
     </PageLayout>

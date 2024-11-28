@@ -13,10 +13,10 @@ class Toilet extends Model
 
     protected $fillable = ['name', 'location', 'rating', 'description', 'longitude', 'latitude', 'discoverer_id'];
 
-    // public function reviews()
-    // {
-    //     return $this->hasMany(Review::class);
-    // }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     public function facilities()
     {

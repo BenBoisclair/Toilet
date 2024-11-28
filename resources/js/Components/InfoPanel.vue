@@ -50,30 +50,30 @@ const handleTouchEnd = () => {
         @touchmove="handleTouchMove"
         @touchend="handleTouchEnd"
     >
-        <div >
+        <div>
             <p class="truncate text-gray-700">{{ toilet.location }}</p>
             <a :href="'/toilets/' + toilet.id">
-                <h2 class="-mt-2 truncate text-[24px] font-bold">
+                <h2 class="truncate text-[24px] font-bold">
                     {{ toilet.name }}
                 </h2>
             </a>
-            <div class="mt-2 flex w-full items-center">
-                <span v-for="star in toilet.ratings" :key="toilet.id + star">
-                    <img src="/toilet.svg" class="w-[30px]" />
-                </span>
-                <span
-                    v-for="star in 5 - toilet.ratings"
-                    :key="toilet.id + star"
-                >
-                    <img src="/toilet.svg" class="w-[30px] opacity-20" />
-                </span>
+            <div class="mt-2 flex w-full items-center gap-2">
+                <span class="text-[20px]">{{
+                    toilet.reviews_avg_rating.toFixed(1)
+                }}</span>
+                <img src="toilet_star.svg" class="h-[26px] w-[21px]" />
+                <!-- <span class="text-[20px]">({{ toilet.reviews_count }})</span> -->
+                <img src="info.svg" />
             </div>
-            <div class="mt-2 text-sm text-gray-500">Discovered by {{ toilet.discoverer.username }}</div>
+            <div class="mt-2 text-sm text-gray-500">
+                Discovered by {{ toilet.discoverer.username }}
+            </div>
         </div>
         <div class="flex w-full gap-2">
             <FacilityBadge
                 v-for="facility in toilet.facilities"
                 :key="toilet.id + facility.id"
+                :active="true"
                 :facility="facility"
             />
         </div>
