@@ -58,9 +58,13 @@ const handleTouchEnd = () => {
                 </h2>
             </a>
             <div class="mt-2 flex w-full items-center gap-2">
-                <span class="text-[20px]">{{
-                    toilet.reviews_avg_rating.toFixed(1)
-                }}</span>
+                <span class="text-[20px]">
+                    {{
+                        toilet.reviews_avg_rating
+                            ? toilet.reviews_avg_rating.toFixed(1)
+                            : 0.0
+                    }}
+                </span>
                 <img src="toilet_star.svg" class="h-[26px] w-[21px]" />
                 <!-- <span class="text-[20px]">({{ toilet.reviews_count }})</span> -->
                 <img src="info.svg" />
