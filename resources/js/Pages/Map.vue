@@ -18,7 +18,7 @@ onMounted(() => {
         zoomControl: false,
     }).setView([13.736717, 100.523186], 16);
 
-    const mapTile = '4BeojtqFUL3MyeiTDljY';
+    const mapTile = 'zugey6qt9UEumntZvzIW';
 
     L.tileLayer(
         `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=` +
