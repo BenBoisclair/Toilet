@@ -3,12 +3,14 @@ import DefaultPanel from '@/Components/DefaultPanel.vue';
 import InfoPanel from '@/Components/InfoPanel.vue';
 import TopPanel from '@/Components/TopPanel.vue';
 import { Toilet } from '@/types';
+import { sleep } from '@/utils';
 import L from 'leaflet';
 import { onMounted, ref } from 'vue';
 const { toilets } = defineProps<{ toilets: Toilet[] }>();
 
 const activeToilet = ref<Toilet | null>(null);
 const isLoading = ref(false);
+const isLocationEnabled = ref(false);
 let map: L.Map;
 
 onMounted(() => {
@@ -76,22 +78,48 @@ const clearActiveMarker = () => {
     activeToilet.value = null;
 };
 
-const fetchRandomToilet = async () => {
+const fetchNearestToilet = async () => {
     if (isLoading.value) return;
     isLoading.value = true;
-    console.log(`Searching for Toilet... \nLoading Status: ${isLoading.value}`);
+    isLocationEnabled.value = true;
     try {
-        const response = await fetch('/toilet/random');
-        const randomToilet = await response.json();
-        if (randomToilet) {
-            activeToilet.value = randomToilet;
-            map.setView([randomToilet.latitude, randomToilet.longitude], 13);
-        }
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                isLocationEnabled.value = true;
+
+                const { latitude, longitude } = position.coords;
+
+                console.log(
+                    `User Location: Latitude ${latitude}, Longitude ${longitude}`,
+                );
+
+                // Fetch nearest toilet with user's location
+                const response = await fetch(
+                    `/toilet/nearest?latitude=${latitude}&longitude=${longitude}`,
+                    {
+                        method: 'GET',
+                    },
+                );
+
+                const nearestToilet = await response.json();
+
+                if (nearestToilet) {
+                    activeToilet.value = nearestToilet;
+                    map.setView(
+                        [nearestToilet.latitude, nearestToilet.longitude],
+                        13,
+                    );
+                }
+            },
+            async (error) => {
+                isLocationEnabled.value = false;
+                console.error('Error fetching location:', error);
+            },
+        );
     } catch (error) {
-        console.error('Error fetching random toilet:', error);
+        console.error('Error fetching nearest toilet:', error);
     } finally {
         isLoading.value = false;
-        console.log(`Search Completed! \nLoading Status: ${isLoading.value}`);
     }
 };
 </script>
@@ -122,8 +150,9 @@ const fetchRandomToilet = async () => {
                 />
                 <DefaultPanel
                     v-else
-                    :onClick="fetchRandomToilet"
+                    :onClick="fetchNearestToilet"
                     :isLoading="isLoading"
+                    :isLocationEnabled="isLocationEnabled"
                 />
             </div>
         </div>

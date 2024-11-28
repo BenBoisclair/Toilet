@@ -1,16 +1,44 @@
 <script setup lang="ts">
 import { Plus } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
 
-defineProps<{ onClick: () => void; isLoading: boolean }>();
+const { isLocationEnabled } = defineProps<{
+    onClick: () => void;
+    isLoading: boolean;
+    isLocationEnabled: boolean;
+}>();
+
+const showWarning = ref(false);
+
+watch(
+    () => isLocationEnabled,
+    (newVal) => {
+        if (!newVal) {
+            showWarning.value = true;
+            setTimeout(() => {
+                showWarning.value = false;
+            }, 5000);
+        } else {
+            showWarning.value = false;
+        }
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
     <div class="flex flex-1 flex-col">
-        <div class="flex flex-1 items-center justify-center">
+        <div class="relative flex flex-1 items-center justify-center">
+            <div
+                v-if="showWarning"
+                class="default-shadow absolute -top-2 z-10 flex w-fit animate-pulse items-center justify-center rounded-3xl bg-white p-2 text-center"
+            >
+                Your location is disabled.
+            </div>
             <div class="relative">
                 <div
                     :class="[
-                        'flex h-[100px] w-[100px] items-center justify-center rounded-full bg-white shadow-xl',
+                        'default-shadow flex h-[100px] w-[100px] items-center justify-center rounded-full bg-white',
                         { 'animate-bounce': isLoading },
                     ]"
                     style="pointer-events: auto"
@@ -28,13 +56,13 @@ defineProps<{ onClick: () => void; isLoading: boolean }>();
                 </a>
             </div>
         </div>
-        <div class="mt-4">
+        <!-- <div class="mt-4">
             <div
                 class="w-fit rounded-full bg-gray-200 px-6 py-2 shadow-xl"
                 style="pointer-events: auto"
             >
                 Filter
             </div>
-        </div>
+        </div> -->
     </div>
 </template>

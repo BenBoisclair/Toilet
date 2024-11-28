@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Appbar from '@/Components/Appbar.vue';
+import Button from '@/Components/Button.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/Button.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PageLayout from '@/Layouts/PageLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 
 defineProps<{
     canResetPassword?: boolean;
@@ -36,7 +36,27 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit" class="rounded-lg bg-gray-300 p-5">
+        <div class="flex flex-col gap-3 rounded-xl bg-gray-100 p-5 text-sm">
+            <span
+                >Everybody uses toilets. Wouldn't it be nice to find the closest
+                one with your preferences?</span
+            >
+            <span class="font-bold text-[18px]"
+                ><a href="/register" class="text-blue-500 underline">Join us</a>
+                and you'll be able to</span
+            >
+            <ul class="flex flex-col gap-2">
+                <li class="flex items-center gap-1">
+                    <img src="/golden_toilet.svg" class="w-5 h-5"/>Expand the Toilet Network
+                </li>
+                <li class="flex items-center gap-1"><img src="/golden_toilet.svg" class="w-5 h-5" />Write reviews</li>
+            </ul>
+            <span
+                >The Golden Toilet awaits you.</span
+            >
+        </div>
+
+        <form @submit.prevent="submit" class="mt-5">
             <div>
                 <InputLabel for="email" value="Email" />
 
@@ -76,25 +96,26 @@ const submit = () => {
             </div>
 
             <div class="mt-4 flex items-center justify-end">
-                <Link
+                <!-- <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                     Forgot your password?
-                </Link>
+                </Link> -->
 
-                <PrimaryButton
-                    class="ms-4"
+                <Button
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Log in
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
-        <div class="flex w-full justify-center py-2 gap-1">
-            No Account?<a href="/register" class="text-blue-500 underline">Join now!</a>
+        <div class="flex w-full justify-center gap-1 py-2">
+            No Account?<a href="/register" class="text-blue-500 underline"
+                >Join now!</a
+            >
         </div>
     </PageLayout>
 </template>

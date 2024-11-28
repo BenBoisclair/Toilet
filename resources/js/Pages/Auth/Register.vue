@@ -7,6 +7,8 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import PageLayout from '@/Layouts/PageLayout.vue';
 import Appbar from '@/Components/Appbar.vue';
+import Button from '@/Components/Button.vue';
+import Avatar from '@/Components/Avatar.vue';
 
 const form = useForm({
     username: '',
@@ -28,7 +30,9 @@ const submit = () => {
     <Head title="Register" />
     <Appbar title="Register" />
     <PageLayout>
-
+        <div class="w-full flex justify-center mb-5">
+            <Avatar :shadows="true" height="100px" width="100px" background="white" :borders="true" />
+        </div>
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="username" value="Username" />
@@ -97,21 +101,20 @@ const submit = () => {
                 />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
+            <div class="mt-8 flex items-center justify-end">
+                <!-- <Link
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                     Already registered?
-                </Link>
+                </Link> -->
+                <Button
 
-                <PrimaryButton
-                    class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Register
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </PageLayout>

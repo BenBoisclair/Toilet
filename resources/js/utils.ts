@@ -7,3 +7,5 @@ export const formatDate = (dateString: string) => {
     };
     return date.toLocaleDateString('en-US', options);
 };
+
+export const sleep = (seconds: number) => new Promise(resolve => setTimeout(resolve, seconds * 1000));

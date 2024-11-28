@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Appbar from '@/Components/Appbar.vue';
+import Avatar from '@/Components/Avatar.vue';
 import Button from '@/Components/Button.vue';
 import FacilityBadge from '@/Components/FacilityBadge.vue';
 import ReviewCard from '@/Components/ReviewCard.vue';
@@ -39,9 +40,7 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
         <div class="px-5 py-[20px] text-[20px]">
             <span class="font-bold">Discoverer</span>
             <div class="flex gap-2 py-[14px]">
-                <div
-                    class="h-[70px] w-[70px] shrink-0 rounded-full bg-black"
-                ></div>
+                <Avatar :shadows="true" height="70px" width="70px" background="white" :borders="true" />
                 <div class="flex w-full flex-col justify-center leading-5">
                     <span class="text-[20px]">{{
                         toilet.discoverer.username

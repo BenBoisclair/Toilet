@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Review } from '@/types';
 import { formatDate } from '@/utils';
+import Avatar from './Avatar.vue';
 
 const { review } = defineProps<{ review: Review }>();
 
@@ -19,7 +20,7 @@ const genderIcon =
         class="default-shadow flex h-full w-[300px] shrink-0 flex-col gap-[14px] rounded-3xl bg-white p-[20px]"
     >
         <div class="flex gap-2">
-            <div class="h-[55px] w-[55px] shrink-0 rounded-full bg-black"></div>
+            <Avatar :shadows="true" height="55px" width="55px" background="white" :borders="true" />
             <div class="flex w-full flex-col justify-center leading-5">
                 <span class="text-[14px]">{{ review.reviewer.username }}</span>
                 <span class="text-[12px] text-[#818181]">{{
