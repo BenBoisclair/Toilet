@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
+import Appbar from '@/Components/Appbar.vue';
+import Avatar from '@/Components/Avatar.vue';
+import Button from '@/Components/Button.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/Button.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
 import PageLayout from '@/Layouts/PageLayout.vue';
-import Appbar from '@/Components/Appbar.vue';
-import Button from '@/Components/Button.vue';
-import Avatar from '@/Components/Avatar.vue';
+import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     username: '',
@@ -30,8 +28,14 @@ const submit = () => {
     <Head title="Register" />
     <Appbar title="Register" />
     <PageLayout>
-        <div class="w-full flex justify-center mb-5">
-            <Avatar :shadows="true" height="100px" width="100px" background="white" :borders="true" />
+        <div class="mb-5 flex w-full justify-center">
+            <Avatar
+                :shadows="true"
+                height="100px"
+                width="100px"
+                background="white"
+                :borders="true"
+            />
         </div>
         <form @submit.prevent="submit">
             <div>
@@ -109,7 +113,6 @@ const submit = () => {
                     Already registered?
                 </Link> -->
                 <Button
-
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >

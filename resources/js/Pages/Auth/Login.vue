@@ -41,19 +41,21 @@ const submit = () => {
                 >Everybody uses toilets. Wouldn't it be nice to find the closest
                 one with your preferences?</span
             >
-            <span class="font-bold text-[18px]"
+            <span class="text-[18px] font-bold"
                 ><a href="/register" class="text-blue-500 underline">Join us</a>
                 and you'll be able to</span
             >
             <ul class="flex flex-col gap-2">
                 <li class="flex items-center gap-1">
-                    <img src="/golden_toilet.svg" class="w-5 h-5"/>Expand the Toilet Network
+                    <img src="/golden_toilet.svg" class="h-5 w-5" />Expand the
+                    Toilet Network
                 </li>
-                <li class="flex items-center gap-1"><img src="/golden_toilet.svg" class="w-5 h-5" />Write reviews</li>
+                <li class="flex items-center gap-1">
+                    <img src="/golden_toilet.svg" class="h-5 w-5" />Write
+                    reviews
+                </li>
             </ul>
-            <span
-                >The Golden Toilet awaits you.</span
-            >
+            <span>The Golden Toilet awaits you.</span>
         </div>
 
         <form @submit.prevent="submit" class="mt-5">

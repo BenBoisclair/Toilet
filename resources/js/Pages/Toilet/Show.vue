@@ -65,7 +65,7 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
         </div>
         <div class="px-5">
             <a :href="'/toilets/' + toilet.id + '/reviews/add'"
-                ><Button variant="secondary">Write Review</Button></a
+                ><Button variant="y">Write Review</Button></a
             >
         </div>
     </div>
