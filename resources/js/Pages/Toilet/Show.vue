@@ -8,10 +8,10 @@ import { Toilet } from '@/types';
 import { formatDate } from '@/utils';
 const { toilet } = defineProps<{ toilet: Toilet }>();
 
-const average =
-    typeof toilet.reviews_avg_rating === 'number'
-        ? toilet.reviews_avg_rating
-        : 0.0;
+// const average =
+//     typeof toilet.reviews_avg_rating === 'number'
+//         ? toilet.reviews_avg_rating
+//         : 0.0;
 </script>
 
 <template>
@@ -23,7 +23,7 @@ const average =
                 {{ toilet.name }}
             </h1>
             <div class="mt-2 flex w-full items-center gap-2">
-                <span class="text-[20px]">{{ average }}</span>
+                <!-- <span class="text-[20px]">{{ average }}</span> -->
                 <img src="/toilet_star.svg" class="h-[26px] w-[21px]" />
                 <!-- <span class="text-[20px]">({{ toilet.reviews_count }})</span> -->
                 <img src="/info.svg" />
