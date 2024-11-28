@@ -6,7 +6,10 @@ import { Toilet } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import L from 'leaflet';
 import { onMounted, ref } from 'vue';
-const { toilets, MAPTILER } = defineProps<{ toilets: Toilet[], MAPTILER: string }>();
+const { toilets, MAPTILER } = defineProps<{
+    toilets: Toilet[];
+    MAPTILER: string;
+}>();
 
 const activeToilet = ref<Toilet | null>(null);
 const isLoading = ref(false);
@@ -18,12 +21,9 @@ onMounted(() => {
         zoomControl: false,
     }).setView([13.736717, 100.523186], 16);
 
-
-    const mapTile = 1212;
-
     L.tileLayer(
         `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=` +
-        MAPTILER,
+            MAPTILER,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
