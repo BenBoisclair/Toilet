@@ -3,7 +3,6 @@ import DefaultPanel from '@/Components/DefaultPanel.vue';
 import InfoPanel from '@/Components/InfoPanel.vue';
 import TopPanel from '@/Components/TopPanel.vue';
 import { Toilet } from '@/types';
-import { sleep } from '@/utils';
 import L from 'leaflet';
 import { onMounted, ref } from 'vue';
 const { toilets } = defineProps<{ toilets: Toilet[] }>();
@@ -16,15 +15,7 @@ let map: L.Map;
 onMounted(() => {
     map = L.map('map', {
         zoomControl: false,
-    }).setView(
-        [
-            // toilets[0].latitude ??
-            13.736717,
-            // toilets[0].longitude ??
-            100.523186,
-        ],
-        13,
-    );
+    }).setView([13.736717, 100.523186], 13);
 
     const mapTile = '4BeojtqFUL3MyeiTDljY';
 

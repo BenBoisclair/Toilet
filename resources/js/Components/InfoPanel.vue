@@ -35,11 +35,6 @@ const handleTouchEnd = () => {
         translateY.value = 0;
     }
 };
-
-// const average =
-//     typeof toilet.reviews_avg_rating === 'number'
-//         ? toilet.reviews_avg_rating
-//         : 0.0;
 </script>
 
 <template>
@@ -63,11 +58,13 @@ const handleTouchEnd = () => {
                 </h2>
             </a>
             <div class="mt-2 flex w-full items-center gap-2">
-                <!-- <span class="text-[20px]">
+                <span class="text-[20px]">
                     {{
-                        average
+                        toilet.reviews_avg_rating
+                            ? toilet.reviews_avg_rating.toFixed(1)
+                            : 0.0
                     }}
-                </span> -->
+                </span>
                 <img src="toilet_star.svg" class="h-[26px] w-[21px]" />
                 <!-- <span class="text-[20px]">({{ toilet.reviews_count }})</span> -->
                 <img src="info.svg" />

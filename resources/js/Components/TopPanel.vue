@@ -1,5 +1,6 @@
 <template>
-    <div class="flex h-[90px] items-center justify-end p-5">
+    <div class="flex h-[90px] items-center justify-between p-5">
+        <span  class="font-bold text-xl">V.0.5</span>
         <a href="/profile"
             ><div
                 class="default-shadow h-[50px] w-[50px] rounded-full border-2 border-black bg-white flex items-center justify-center"
