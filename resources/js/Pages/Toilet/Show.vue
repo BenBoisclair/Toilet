@@ -10,6 +10,7 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
 </script>
 
 <template>
+    <Head title="Interesting Toilet" />
     <Appbar />
     <div v-if="toilet" class="flex flex-col pb-10">
         <div class="flex flex-col px-5 py-[20px] leading-6">

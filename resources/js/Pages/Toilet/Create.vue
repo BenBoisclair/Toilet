@@ -64,7 +64,7 @@ const initializeMap = () => {
 
     const map = L.map(mapContainer.value, { zoomControl: false }).setView(
         [userCoords.value.lat, userCoords.value.lng],
-        13,
+    18,
     );
 
     L.tileLayer(
@@ -137,6 +137,7 @@ function submit() {
 </script>
 
 <template>
+    <Head title="Add Toilet" />
     <Appbar title="Add a Bathroom" />
     <PageLayout>
         <form @submit.prevent="submit">

@@ -3,6 +3,7 @@ import Appbar from '@/Components/Appbar.vue';
 import Button from '@/Components/Button.vue';
 import FacilityBadge from '@/Components/FacilityBadge.vue';
 import InputError from '@/Components/InputError.vue';
+import TextArea from '@/Components/TextArea.vue';
 import PageLayout from '@/Layouts/PageLayout.vue';
 import { Facility, Gender, Toilet } from '@/types';
 import { router } from '@inertiajs/vue3';
@@ -64,10 +65,11 @@ function submit() {
     });
 }
 
-console.log(errors)
+console.log(errors);
 </script>
 
 <template>
+    <Head title="Write Review" />
     <Appbar title="Write Review" />
     <PageLayout>
         <form @submit.prevent="submit">
@@ -93,7 +95,9 @@ console.log(errors)
                         @click="setRating(i)"
                     />
                 </div>
-                <InputError v-if="errors.rating">{{ errors.rating }}</InputError>
+                <InputError v-if="errors.rating">{{
+                    errors.rating
+                }}</InputError>
             </div>
 
             <!-- Gender -->
@@ -113,17 +117,21 @@ console.log(errors)
                         @click="setGender(gender.id)"
                     />
                 </div>
-                <InputError v-if="errors.gender">{{ errors.gender }}</InputError>
+                <InputError v-if="errors.gender">{{
+                    errors.gender
+                }}</InputError>
             </div>
 
             <div class="mt-5">
                 <p>How was it? (optional)</p>
-                <textarea
+                <TextArea
                     v-model="form.content"
                     class="mt-2 w-full rounded-lg border border-gray-300 p-2"
                     rows="4"
-                ></textarea>
-                <InputError v-if="errors.content">{{ errors.content }}</InputError>
+                />
+                <InputError v-if="errors.content">{{
+                    errors.content
+                }}</InputError>
             </div>
 
             <div class="mt-5">
@@ -137,7 +145,9 @@ console.log(errors)
                         @click="toggleFacility(facility.id)"
                     />
                 </div>
-                <InputError v-if="errors.facilities">{{ errors.facilities }}</InputError>
+                <InputError v-if="errors.facilities">{{
+                    errors.facilities
+                }}</InputError>
             </div>
             <div class="mt-10 flex justify-center">
                 <Button class="font-bold"> Post </Button>

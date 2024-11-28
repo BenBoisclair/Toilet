@@ -3,6 +3,7 @@ import DefaultPanel from '@/Components/DefaultPanel.vue';
 import InfoPanel from '@/Components/InfoPanel.vue';
 import TopPanel from '@/Components/TopPanel.vue';
 import { Toilet } from '@/types';
+import { Head } from '@inertiajs/vue3';
 import L from 'leaflet';
 import { onMounted, ref } from 'vue';
 const { toilets } = defineProps<{ toilets: Toilet[] }>();
@@ -15,7 +16,7 @@ let map: L.Map;
 onMounted(() => {
     map = L.map('map', {
         zoomControl: false,
-    }).setView([13.736717, 100.523186], 13);
+    }).setView([13.736717, 100.523186], 16);
 
     const mapTile = '4BeojtqFUL3MyeiTDljY';
 
@@ -113,9 +114,34 @@ const fetchNearestToilet = async () => {
         isLoading.value = false;
     }
 };
+
+const titles = [
+    'Loo-cation Explorer',
+    'Flush Finder Pro',
+    'Toilet Treasure Map',
+    'Potty Paradise Locator',
+    'Where to Go? 💩',
+    'The Great Loo Hunt',
+    'Throne Tracker',
+    'Restroom Radar',
+    'Map My Throne',
+    'Peeps & Seats',
+];
+
+const currentTitle = ref(titles[0]);
+
+// Cycle through titles every few seconds
+onMounted(() => {
+    let index = 0;
+    setInterval(() => {
+        index = (index + 1) % titles.length;
+        currentTitle.value = titles[index];
+    }, 10000);
+});
 </script>
 
 <template>
+    <Head :title="currentTitle" />
     <div class="relative h-screen w-full overflow-hidden">
         <div id="map" class="absolute inset-0 z-0 bg-blue-500"></div>
 

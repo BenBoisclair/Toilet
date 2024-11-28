@@ -16,7 +16,7 @@ const logout = () => {
 </script>
 
 <template>
-    <Head title="Profile" />
+    <Head title="Your Profile" />
     <Appbar />
     <PageLayout>
         <div>
