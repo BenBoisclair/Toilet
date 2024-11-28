@@ -21,7 +21,7 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
             <div class="mt-2 flex w-full items-center gap-2">
                 <span class="text-[20px]">{{
                     toilet.reviews_avg_rating
-                        ? toilet.reviews_avg_rating.toFixed(1)
+                        ? toilet.reviews_avg_rating
                         : 0.0
                 }}</span>
                 <img src="/toilet_star.svg" class="h-[26px] w-[21px]" />
