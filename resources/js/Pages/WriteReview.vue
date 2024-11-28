@@ -109,8 +109,8 @@ console.log(errors);
                         :key="'Gender-' + gender.id + '-' + gender.name"
                         :src="
                             form.gender === gender.id
-                                ? '/' + gender.name + '.svg'
-                                : '/' + gender.name + '_inactive.svg'
+                                ? '/' + gender.name.toLowerCase() + '.svg'
+                                : '/' + gender.name.toLowerCase() + '_inactive.svg'
                         "
                         alt="Gender"
                         class="h-12 cursor-pointer"

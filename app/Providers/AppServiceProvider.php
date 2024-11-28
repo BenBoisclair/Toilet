@@ -14,7 +14,6 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Inertia::share('MAPTILER', env('MAPTILER_API_KEY'));
-
     }
 
     /**
