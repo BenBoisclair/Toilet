@@ -5,14 +5,13 @@ import TopPanel from '@/Components/TopPanel.vue';
 import { Toilet } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import L from 'leaflet';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps<{
     toilets: Toilet[];
-    MAPTILER: string;
 }>();
 
-const { toilets, MAPTILER } = props;
+const { toilets } = props;
 const userLocationMarker = ref<L.Marker | L.Circle | null>(null);
 const coords = ref<[number, number]>([13.836717, 100.523186]);
 const activeToilet = ref<Toilet | null>(null);
@@ -21,15 +20,13 @@ const isLocationEnabled = ref(false);
 let map: L.Map;
 let watchId: number;
 
-const mapTilerKey = MAPTILER;
-
 const initMap = () => {
     map = L.map('map', {
         zoomControl: false,
     }).setView(coords.value, 17);
 
     L.tileLayer(
-        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${mapTilerKey}`,
+        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${import.meta.env.MAPTILER_API_KEY}`,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">' +
@@ -118,7 +115,7 @@ const watchUserLocation = () => {
         {
             enableHighAccuracy: true,
             maximumAge: 0,
-        }
+        },
     );
 };
 
@@ -197,7 +194,6 @@ onMounted(() => {
 onUnmounted(() => {
     stopWatchingLocation();
 });
-
 </script>
 
 <template>

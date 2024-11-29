@@ -13,10 +13,9 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { onMounted, reactive, ref } from 'vue';
 
-const { MAPTILER } = defineProps<{
+defineProps<{
     facilities: Facility[];
     errors: { name: string; description: string; facilities: string };
-    MAPTILER: string;
 }>();
 
 let form = reactive<{
@@ -37,7 +36,6 @@ const mapContainer = ref(null);
 const userCoords = ref({ lat: 13.736717, lng: 100.523186 }); // Default to Bangkok
 const currentCoords = ref({ lat: 0, lng: 0 });
 const selectedFacilities = ref(form.facilities || []);
-const mapTiler = MAPTILER;
 
 onMounted(() => {
     if (navigator.geolocation) {
@@ -70,7 +68,7 @@ const initializeMap = () => {
 
     L.tileLayer(
         'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=' +
-            mapTiler,
+        import.meta.env.MAPTILER_API_KEY,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
