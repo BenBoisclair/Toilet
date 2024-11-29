@@ -5,57 +5,65 @@ import TopPanel from '@/Components/TopPanel.vue';
 import { Toilet } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import L from 'leaflet';
-import { onMounted, ref } from 'vue';
-const { toilets, MAPTILER } = defineProps<{
+import { computed, onMounted, ref } from 'vue';
+
+const props = defineProps<{
     toilets: Toilet[];
     MAPTILER: string;
 }>();
 
+const { toilets, MAPTILER } = props;
+
+const coords = ref<[number, number]>([13.736717, 100.523186]);
 const activeToilet = ref<Toilet | null>(null);
 const isLoading = ref(false);
 const isLocationEnabled = ref(false);
 let map: L.Map;
 
-const mapTiler = MAPTILER ? MAPTILER : 'zugey6qt9UEumntZvzIW'
+const mapTilerKey = computed(() => MAPTILER || 'zugey6qt9UEumntZvzIW');
 
-onMounted(() => {
+const initMap = () => {
     map = L.map('map', {
         zoomControl: false,
-    }).setView([13.736717, 100.523186], 16);
+    }).setView(coords.value, 16);
 
     L.tileLayer(
-        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=` +
-        mapTiler,
+        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${mapTilerKey.value}`,
         {
             attribution:
-                '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+                '<a href="https://www.maptiler.com/copyright/" target="_blank">' +
+                '&copy; MapTiler</a> ' +
+                '<a href="https://www.openstreetmap.org/copyright" target="_blank">' +
+                '&copy; OpenStreetMap contributors</a>',
         },
     ).addTo(map);
+};
 
+const addToiletMarkers = () => {
     toilets.forEach((toilet) => {
         const toiletIcon = L.divIcon({
             className: '',
             iconAnchor: [20, 0],
             iconSize: [32, 40],
             html: `
-                    <div style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 2px solid #000;
-                    background-color: #fff;
-                    ">
-                    <img src="/toilet.svg" alt="Toilet Icon" style="
-                        width: 70%;
-                        height: 70%;
-                        object-fit: contain;
-                    " />
-                    </div>
-                    `,
+        <div style="
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid #000;
+          background-color: #fff;
+        ">
+          <img src="/toilet.svg" alt="Toilet Icon" style="
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+          " />
+        </div>
+      `,
         });
 
         const marker = L.marker([toilet.latitude, toilet.longitude], {
@@ -67,10 +75,32 @@ onMounted(() => {
             map.setView([toilet.latitude, toilet.longitude], map.getZoom());
         });
     });
-});
+};
 
-const clearActiveMarker = () => {
-    activeToilet.value = null;
+const getCurrentPosition = (): Promise<GeolocationPosition> => {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
+        });
+    });
+};
+
+const fetchUserLocation = async () => {
+    isLoading.value = true;
+    try {
+        const position = await getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+        isLocationEnabled.value = true;
+        coords.value = [latitude, longitude];
+        map.setView(coords.value, 16);
+    } catch (error) {
+        isLocationEnabled.value = false;
+        console.error('Error fetching location:', error);
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 const fetchNearestToilet = async () => {
@@ -78,44 +108,34 @@ const fetchNearestToilet = async () => {
     isLoading.value = true;
     isLocationEnabled.value = true;
     try {
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                isLocationEnabled.value = true;
+        const position = await getCurrentPosition();
+        const { latitude, longitude } = position.coords;
 
-                const { latitude, longitude } = position.coords;
-
-                console.log(
-                    `User Location: Latitude ${latitude}, Longitude ${longitude}`,
-                );
-
-                // Fetch nearest toilet with user's location
-                const response = await fetch(
-                    `/toilet/nearest?latitude=${latitude}&longitude=${longitude}`,
-                    {
-                        method: 'GET',
-                    },
-                );
-
-                const nearestToilet = await response.json();
-
-                if (nearestToilet) {
-                    activeToilet.value = nearestToilet;
-                    map.setView(
-                        [nearestToilet.latitude, nearestToilet.longitude],
-                        13,
-                    );
-                }
-            },
-            async (error) => {
-                isLocationEnabled.value = false;
-                console.error('Error fetching location:', error);
-            },
+        const response = await fetch(
+            `/toilet/nearest?latitude=${latitude}&longitude=${longitude}`,
         );
+        const nearestToilet = await response.json();
+
+        if (nearestToilet) {
+            activeToilet.value = nearestToilet;
+            map.setView([nearestToilet.latitude, nearestToilet.longitude], 13);
+        }
     } catch (error) {
+        isLocationEnabled.value = false;
         console.error('Error fetching nearest toilet:', error);
     } finally {
         isLoading.value = false;
     }
+};
+
+const clearActiveMarker = () => {
+    activeToilet.value = null;
+};
+
+const updateCoords = (newCoords: [number, number]) => {
+    const correctedCoords: [number, number] = [newCoords[1], newCoords[0]];
+    coords.value = correctedCoords;
+    map.setView(correctedCoords, map.getZoom());
 };
 
 const titles = [
@@ -133,13 +153,19 @@ const titles = [
 
 const currentTitle = ref(titles[0]);
 
-// Cycle through titles every few seconds
-onMounted(() => {
+const rotateTitle = () => {
     let index = 0;
     setInterval(() => {
         index = (index + 1) % titles.length;
         currentTitle.value = titles[index];
     }, 10000);
+};
+
+onMounted(() => {
+    initMap();
+    addToiletMarkers();
+    fetchUserLocation();
+    rotateTitle();
 });
 </script>
 
@@ -158,7 +184,7 @@ onMounted(() => {
             class="absolute z-20 flex h-full w-full flex-col"
             style="pointer-events: none"
         >
-            <TopPanel />
+            <TopPanel :coords="coords" @update-coords="updateCoords" />
 
             <div class="flex-1"></div>
 

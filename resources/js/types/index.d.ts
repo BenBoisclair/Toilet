@@ -23,15 +23,15 @@ export interface Toilet {
     latitude: number;
     longitude: number;
     name: string;
-    location: string;
+    location: string | null;
     description: string;
     ratings: number;
     created_at: string;
-    reviews_count: number;
-    reviews_avg_rating: number;
-    facilities: Facility[];
+    reviews_count: number | null;
+    reviews_avg_rating: number | null;
+    facilities: Facility[] | null;
     discoverer: User;
-    reviews: Review[];
+    reviews: Review[] | null;
 }
 
 export interface Gender {
@@ -42,9 +42,9 @@ export interface Gender {
 export interface Review {
     id: number;
     created_at: string;
-    content: string;
+    content: string | null;
     rating: number;
     gender: Gender;
     reviewer: User;
-    facilities: Facility[];
+    facilities: Facility[] | null;
 }

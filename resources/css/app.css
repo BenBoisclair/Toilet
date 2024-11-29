@@ -16,3 +16,9 @@
         box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.15);
     }
 }
+
+input:focus {
+    outline: none;
+    background-color: transparent;
+    box-shadow: none;
+}

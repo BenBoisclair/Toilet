@@ -21,7 +21,7 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
             <div class="mt-2 flex w-full items-center gap-2">
                 <span class="text-[20px]">{{
                     toilet.reviews_avg_rating
-                        ? toilet.reviews_avg_rating
+                        ? toilet.reviews_avg_rating.toFixed(1)
                         : 0.0
                 }}</span>
                 <img src="/toilet_star.svg" class="h-[26px] w-[21px]" />
@@ -60,7 +60,10 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
                 </div>
             </div>
         </div>
-        <div class="py-[20px] text-[20px]" v-if="toilet.reviews.length > 0">
+        <div
+            class="py-[20px] text-[20px]"
+            v-if="toilet.reviews && toilet.reviews.length > 0"
+        >
             <span class="px-5 font-bold">Reviews</span>
             <div
                 class="no-scrollbar flex h-[300px] gap-[20px] overflow-auto px-5 py-[20px]"

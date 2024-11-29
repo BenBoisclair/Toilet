@@ -31,8 +31,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/toilets/{toilet}', [ToiletController::class, 'show'])->name('toilet.show');
 Route::get('/toilet/random', [ToiletController::class, 'random'])->name('toilet.random');
 Route::get('/toilet/nearest', [ToiletController::class, 'nearest'])->name('toilet.nearest');
+Route::get('/toilet/search', [ToiletController::class, 'searchLocation'])->name('location.search');
 
-// Dashboard Route with additional middleware
 Route::get('/dashboard', function () {
     return inertia('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -61,7 +61,7 @@ const handleTouchEnd = () => {
                 <span class="text-[20px]">
                     {{
                         toilet.reviews_avg_rating
-                            ? toilet.reviews_avg_rating
+                            ? toilet.reviews_avg_rating.toFixed(1)
                             : 0.0
                     }}
                 </span>
