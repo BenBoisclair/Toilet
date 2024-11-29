@@ -122,7 +122,7 @@ public function nearest(Request $request)
         $query = $request['query'];
         $latitude = $request['lat'];
         $longitude = $request['lng'];
-        $apiKey = env('MAPTILER_API_KEY');
+        $apiKey = env('MAPTILER_BE_API_KEY');
         $limit = 5;
 
         $response = Http::get("https://api.maptiler.com/geocoding/{$query}.json", [
