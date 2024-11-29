@@ -13,7 +13,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { onMounted, reactive, ref } from 'vue';
 
-const {MAPTILER} = defineProps<{
+const { MAPTILER } = defineProps<{
     facilities: Facility[];
     errors: { name: string; description: string; facilities: string };
     MAPTILER: string;
@@ -37,7 +37,7 @@ const mapContainer = ref(null);
 const userCoords = ref({ lat: 13.736717, lng: 100.523186 }); // Default to Bangkok
 const currentCoords = ref({ lat: 0, lng: 0 });
 const selectedFacilities = ref(form.facilities || []);
-const mapTiler = MAPTILER ? MAPTILER : 'zugey6qt9UEumntZvzIW'
+const mapTiler = MAPTILER;
 
 onMounted(() => {
     if (navigator.geolocation) {
@@ -65,12 +65,12 @@ const initializeMap = () => {
 
     const map = L.map(mapContainer.value, { zoomControl: false }).setView(
         [userCoords.value.lat, userCoords.value.lng],
-    18,
+        18,
     );
 
     L.tileLayer(
         'https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=' +
-        mapTiler,
+            mapTiler,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',

@@ -5,7 +5,7 @@ import TopPanel from '@/Components/TopPanel.vue';
 import { Toilet } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import L from 'leaflet';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps<{
     toilets: Toilet[];
@@ -13,22 +13,23 @@ const props = defineProps<{
 }>();
 
 const { toilets, MAPTILER } = props;
-
-const coords = ref<[number, number]>([13.736717, 100.523186]);
+const userLocationMarker = ref<L.Marker | L.Circle | null>(null);
+const coords = ref<[number, number]>([13.836717, 100.523186]);
 const activeToilet = ref<Toilet | null>(null);
 const isLoading = ref(false);
 const isLocationEnabled = ref(false);
 let map: L.Map;
+let watchId: number;
 
-const mapTilerKey = computed(() => MAPTILER || 'zugey6qt9UEumntZvzIW');
+const mapTilerKey = MAPTILER;
 
 const initMap = () => {
     map = L.map('map', {
         zoomControl: false,
-    }).setView(coords.value, 16);
+    }).setView(coords.value, 17);
 
     L.tileLayer(
-        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${mapTilerKey.value}`,
+        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${mapTilerKey}`,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">' +
@@ -87,19 +88,44 @@ const getCurrentPosition = (): Promise<GeolocationPosition> => {
     });
 };
 
-const fetchUserLocation = async () => {
-    isLoading.value = true;
-    try {
-        const position = await getCurrentPosition();
-        const { latitude, longitude } = position.coords;
-        isLocationEnabled.value = true;
-        coords.value = [latitude, longitude];
-        map.setView(coords.value, 16);
-    } catch (error) {
-        isLocationEnabled.value = false;
-        console.error('Error fetching location:', error);
-    } finally {
-        isLoading.value = false;
+const watchUserLocation = () => {
+    if (!navigator.geolocation) {
+        console.error('Geolocation is not supported by this browser.');
+        return;
+    }
+
+    watchId = navigator.geolocation.watchPosition(
+        (position) => {
+            const { latitude, longitude } = position.coords;
+            coords.value = [latitude, longitude];
+            map.setView(coords.value, 16);
+
+            if (userLocationMarker.value) {
+                userLocationMarker.value.setLatLng(coords.value);
+            } else {
+                userLocationMarker.value = L.circle(coords.value, {
+                    radius: 10,
+                    color: 'white',
+                    fillColor: '#1D23DAFF',
+                    fillOpacity: 0.5,
+                    className: 'animate-pulse',
+                }).addTo(map);
+            }
+        },
+        (error) => {
+            console.error('Error watching location:', error);
+        },
+        {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+        }
+    );
+};
+
+// Stop watching location when no longer needed
+const stopWatchingLocation = () => {
+    if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
     }
 };
 
@@ -164,9 +190,14 @@ const rotateTitle = () => {
 onMounted(() => {
     initMap();
     addToiletMarkers();
-    fetchUserLocation();
+    watchUserLocation();
     rotateTitle();
 });
+
+onUnmounted(() => {
+    stopWatchingLocation();
+});
+
 </script>
 
 <template>
