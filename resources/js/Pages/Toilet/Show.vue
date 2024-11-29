@@ -20,7 +20,7 @@ const { toilet } = defineProps<{ toilet: Toilet }>();
             </h1>
             <div class="mt-2 flex w-full items-center gap-2">
                 <span class="text-[20px]">{{
-                    toilet.reviews_avg_rating
+                    typeof toilet.reviews_avg_rating === 'number'
                         ? toilet.reviews_avg_rating.toFixed(1)
                         : 0.0
                 }}</span>

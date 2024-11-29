@@ -133,9 +133,11 @@ public function nearest(Request $request)
         ]);
 
         if ($response->failed()) {
+            $errorDetails = $response->json()['message'] ?? 'No error details provided.';
             return response()->json([
                 'error' => 'Unable to fetch locations at the moment.',
-            ], 500);
+                'details' => $errorDetails,
+            ], $response->status());
         }
 
         $locations = collect($response->json()['features'] ?? [])
