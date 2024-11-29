@@ -26,7 +26,7 @@ const initMap = () => {
     }).setView(coords.value, 17);
 
     L.tileLayer(
-        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${import.meta.env.MAPTILER_API_KEY}`,
+        `https://api.maptiler.com/maps/basic-v2-light/{z}/{x}/{y}.png?key=${import.meta.env.VITE_MAPTILER_API_KEY}`,
         {
             attribution:
                 '<a href="https://www.maptiler.com/copyright/" target="_blank">' +

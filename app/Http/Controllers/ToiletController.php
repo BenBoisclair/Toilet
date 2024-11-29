@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Facility;
 use App\Models\Toilet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
@@ -122,7 +123,7 @@ public function nearest(Request $request)
         $query = $request['query'];
         $latitude = $request['lat'];
         $longitude = $request['lng'];
-        $apiKey = env('MAPTILER_BE_API_KEY');
+        $apiKey = Config::get('services.maptiler.key');
         $limit = 5;
 
         $response = Http::get("https://api.maptiler.com/geocoding/{$query}.json", [
