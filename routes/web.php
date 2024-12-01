@@ -32,8 +32,8 @@ Route::get('/toilets/{toilet}/get', [ToiletController::class, 'getToilet'])->nam
 Route::get('/toilets/{toilet}', [ToiletController::class, 'show'])->name('toilet.show');
 Route::get('/toilet/random', [ToiletController::class, 'random'])->name('toilet.random');
 Route::get('/toilet/nearest', [ToiletController::class, 'nearest'])->name('toilet.nearest');
-Route::get('/toilet/search/', [ToiletController::class, 'searchToilet'])->name('location.search');
-Route::get('/toilet/search/poi', [ToiletController::class, 'searchPOI'])->name('location.search');
+Route::get('/toilet/search/', [ToiletController::class, 'searchToilet'])->name('location.searchToilet');
+Route::get('/toilet/search/poi', [ToiletController::class, 'searchPOI'])->name('location.searchPOI');
 
 
 Route::get('/dashboard', function () {
