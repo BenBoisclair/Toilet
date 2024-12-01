@@ -2,7 +2,9 @@
 import DefaultPanel from '@/Components/DefaultPanel.vue';
 import InfoPanel from '@/Components/InfoPanel.vue';
 import TopPanel from '@/Components/TopPanel.vue';
+import { titles } from '@/misc';
 import { Toilet } from '@/types';
+import { rotateTitle } from '@/utils';
 import { Head } from '@inertiajs/vue3';
 import L from 'leaflet';
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -155,40 +157,36 @@ const clearActiveMarker = () => {
     activeToilet.value = null;
 };
 
-const updateCoords = (newCoords: [number, number]) => {
+const updatePoiCoords = (newCoords: [number, number]) => {
     const correctedCoords: [number, number] = [newCoords[1], newCoords[0]];
     coords.value = correctedCoords;
     map.setView(correctedCoords, map.getZoom());
 };
 
-const titles = [
-    'Loo-cation Explorer',
-    'Flush Finder Pro',
-    'Toilet Treasure Map',
-    'Potty Paradise Locator',
-    'Where to Go? 💩',
-    'The Great Loo Hunt',
-    'Throne Tracker',
-    'Restroom Radar',
-    'Map My Throne',
-    'Peeps & Seats',
-];
+const updateToiletCoords = async (toiletId: number) => {
+    const toilet = await findToilet(toiletId);
+    activeToilet.value = toilet;
+    map.setView([toilet.latitude, toilet.longitude], 17);
+};
+
+const findToilet = async (toiletId: number) => {
+    try {
+        const response = await fetch(`/toilets/${toiletId}/get`);
+        const toilet = await response.json();
+
+        return toilet;
+    } catch (error) {
+        console.error('Error fetching toilet:', error);
+    }
+};
 
 const currentTitle = ref(titles[0]);
-
-const rotateTitle = () => {
-    let index = 0;
-    setInterval(() => {
-        index = (index + 1) % titles.length;
-        currentTitle.value = titles[index];
-    }, 10000);
-};
 
 onMounted(() => {
     initMap();
     addToiletMarkers();
     watchUserLocation();
-    rotateTitle();
+    rotateTitle(currentTitle, titles);
 });
 
 onUnmounted(() => {
@@ -211,7 +209,11 @@ onUnmounted(() => {
             class="absolute z-20 flex h-full w-full flex-col"
             style="pointer-events: none"
         >
-            <TopPanel :coords="coords" @update-coords="updateCoords" />
+            <TopPanel
+                :coords="coords"
+                @update-poi-coords="updatePoiCoords"
+                @update-toilet-coords="updateToiletCoords"
+            />
 
             <div class="flex-1"></div>
 

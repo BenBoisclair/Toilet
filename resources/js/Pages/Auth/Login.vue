@@ -36,7 +36,7 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <div class="flex flex-col gap-3 rounded-xl bg-gray-100 p-5 text-sm">
+        <div class="flex flex-col gap-3 rounded-xl bg-gray-100 p-5 text-sm max-w-[500px]">
             <span
                 >Everybody uses toilets. Wouldn't it be nice to find the closest
                 one with your preferences?</span
@@ -58,7 +58,7 @@ const submit = () => {
             <span>The Golden Toilet awaits you.</span>
         </div>
 
-        <form @submit.prevent="submit" class="mt-5">
+        <form @submit.prevent="submit" class="mt-5 max-w-[400px]">
             <div>
                 <InputLabel for="email" value="Email" />
 
@@ -114,7 +114,7 @@ const submit = () => {
                 </Button>
             </div>
         </form>
-        <div class="flex w-full justify-center gap-1 py-2">
+        <div class="flex w-full justify-center gap-1 py-2 md:justify-start">
             No Account?<a href="/register" class="text-blue-500 underline"
                 >Join now!</a
             >

@@ -72,6 +72,22 @@ class ToiletController extends Controller
         return Inertia::render('Toilet/Show', ['toilet' => $toilet]);
     }
 
+    public function getToilet(Toilet $toilet)
+    {
+        $toilet->load([
+            'facilities',
+            'discoverer',
+            'reviews' => function ($query) {
+                $query->latest();
+            },
+            'reviews.reviewer',
+            'reviews.gender'
+        ])->loadCount('reviews')
+          ->loadAvg('reviews', 'rating');
+
+        return response()->json($toilet);
+    }
+
     /**
      * Return a random toilet.
      */
@@ -112,7 +128,7 @@ public function nearest(Request $request)
     return response()->json($nearestToilet);
     }
 
-    public function searchLocation(Request $request)
+    public function searchPOI(Request $request)
     {
         $request->validate([
             'query' => 'required|string|max:255',
@@ -172,4 +188,41 @@ public function nearest(Request $request)
 
         return $earthRadius * $c;
     }
+
+    public function searchToilet(Request $request)
+{
+    $validated = $request->validate([
+        'query' => ['required', 'string', 'max:255'],
+        'lat' => ['required', 'numeric'],
+        'lng' => ['required', 'numeric'],
+    ]);
+
+    $latitude = $validated['lat'];
+    $longitude = $validated['lng'];
+    $searchQuery = $validated['query'];
+
+    $toilets = Toilet::selectRaw("
+            id, name, latitude, longitude,
+            (6371 * acos(cos(radians(?)) * cos(radians(latitude))
+            * cos(radians(longitude) - radians(?))
+            + sin(radians(?)) * sin(radians(latitude)))) AS distance
+        ", [$latitude, $longitude, $latitude])
+        ->where(function ($query) use ($searchQuery) {
+            $query->where('name', 'LIKE', "%{$searchQuery}%");
+                //   ->orWhere('description', 'LIKE', "%{$searchQuery}%");
+                //   ->orWhereHas('facilities', function ($facilityQuery) use ($searchQuery) {
+                //       $facilityQuery->where('name', 'LIKE', "%{$searchQuery}%");
+                //   });
+        })
+        ->with(['facilities', 'discoverer'])
+        ->withCount('reviews')
+        ->withAvg('reviews', 'rating')
+        ->orderBy('distance')
+        ->limit(5)
+        ->get();
+
+
+
+    return response()->json($toilets);
+}
 }
